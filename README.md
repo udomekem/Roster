@@ -55,6 +55,10 @@ A scalable SaaS platform for disability support providers operating under Austra
 
    Open [http://localhost:3000](http://localhost:3000).
 
+5. **Optional: Seed development data**
+
+   After completing onboarding, run `supabase/seed.sql` in the Supabase SQL Editor to add sample houses and participants to your organisation.
+
 ### First-time setup flow
 
 1. Register a new account at `/register`

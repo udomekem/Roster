@@ -36,11 +36,14 @@ A multi-tenant SaaS platform for Australian disability support providers (NDIS).
 
 ### Not Yet Implemented
 
-- **Notification creation** — `notifications` table exists but no code inserts rows (e.g. when shifts are assigned)
-- **Audit logging** — `audit_logs` table exists but no triggers or app code writes to it
+- **Phase 2+** — staff availability calendar, shift broadcast, replacement worker suggestions, voice-to-case-note, shift summary generation (see AGENT.md)
+
+### Implemented (beyond initial handoff)
+
+- **Notification creation** — shift assignment and incident creation trigger notifications
+- **Audit logging** — shifts, assignments, case notes, incidents via `/api/audit-logs`
 - **File uploads** — case note and incident attachment UI + Supabase Storage integration
-- **Seed data** — dev seed SQL for testing
-- **Phase 2+** — staff availability, shift broadcast, AI features (see AGENT.md)
+- **Seed data** — `supabase/seed.sql` adds sample houses and participants
 
 ---
 
@@ -119,9 +122,9 @@ modules/{domain}/
 
 ## 6. Recommended Next Tasks (Priority Order)
 
-### High Priority — Phase 1 Completion
+### High Priority — Phase 2
 
-1. **Notification creation**
+1. **Staff availability calendar**
    - When a shift is assigned, insert into `notifications` (user_id = staff_id, type = 'shift_assigned', reference_id = shift_id)
    - Use service role or a Supabase Edge Function/trigger so RLS doesn’t block inserts
    - Option: add API route `POST /api/notifications` that creates notifications server-side

@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/client'
 import type { InsertTables, UpdateTables } from '@/types'
+import { sendNotification } from '@/lib/notifications'
+import { logAudit } from '@/lib/audit-log'
 
 export async function getShifts(filters?: { houseId?: string; status?: string; dateFrom?: string; dateTo?: string }) {
   const supabase = createClient()
@@ -53,6 +55,7 @@ export async function createShift(shift: InsertTables<'shifts'>) {
     .single()
 
   if (error) throw error
+  logAudit({ action_type: 'create', entity_type: 'shift', entity_id: data.id })
   return data
 }
 
@@ -66,6 +69,7 @@ export async function updateShift(id: string, updates: UpdateTables<'shifts'>) {
     .single()
 
   if (error) throw error
+  logAudit({ action_type: 'update', entity_type: 'shift', entity_id: id, metadata: updates as Record<string, unknown> })
   return data
 }
 
@@ -73,6 +77,7 @@ export async function deleteShift(id: string) {
   const supabase = createClient()
   const { error } = await supabase.from('shifts').delete().eq('id', id)
   if (error) throw error
+  logAudit({ action_type: 'delete', entity_type: 'shift', entity_id: id })
 }
 
 export async function assignStaff(data: InsertTables<'shift_assignments'>) {
@@ -84,6 +89,19 @@ export async function assignStaff(data: InsertTables<'shift_assignments'>) {
     .single()
 
   if (error) throw error
+
+  // Notify the assigned staff member
+  if (data.staff_id) {
+    sendNotification({
+      user_id: data.staff_id,
+      title: 'New shift assigned',
+      body: 'You have been assigned to a new shift. Tap to view details.',
+      type: 'shift_assigned',
+      reference_type: 'shift',
+      reference_id: data.shift_id as string,
+    })
+  }
+  logAudit({ action_type: 'assign', entity_type: 'shift_assignment', entity_id: assignment.id, metadata: { staff_id: data.staff_id, shift_id: data.shift_id } })
   return assignment
 }
 
@@ -104,6 +122,7 @@ export async function removeAssignment(id: string) {
   const supabase = createClient()
   const { error } = await supabase.from('shift_assignments').delete().eq('id', id)
   if (error) throw error
+  logAudit({ action_type: 'remove', entity_type: 'shift_assignment', entity_id: id })
 }
 
 export async function getMyAssignments() {

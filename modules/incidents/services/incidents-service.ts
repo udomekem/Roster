@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import type { InsertTables, UpdateTables } from '@/types'
+import { logAudit } from '@/lib/audit-log'
 
 export async function getIncidents(filters?: { status?: string; severity?: string }) {
   const supabase = createClient()
@@ -50,6 +51,7 @@ export async function createIncident(incident: InsertTables<'incidents'>) {
     .single()
 
   if (error) throw error
+  logAudit({ action_type: 'create', entity_type: 'incident', entity_id: data.id, metadata: { severity: incident.severity } })
   return data
 }
 
@@ -63,5 +65,6 @@ export async function updateIncident(id: string, updates: UpdateTables<'incident
     .single()
 
   if (error) throw error
+  logAudit({ action_type: 'update', entity_type: 'incident', entity_id: id, metadata: updates as Record<string, unknown> })
   return data
 }

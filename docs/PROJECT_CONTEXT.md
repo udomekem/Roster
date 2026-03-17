@@ -6,7 +6,7 @@ Last updated: 2026-03-14
 
 ## Current Status
 
-Phase: Pre-implementation (architecture approved, no code written yet)
+Phase: Phase 1 MVP complete. Notifications, audit logging, and file uploads implemented.
 
 ---
 
@@ -512,25 +512,25 @@ Features: participant funding profiles, roster-to-funding mapping, funding utili
 
 ## Implemented Modules
 
-None yet. Implementation begins with Phase 1 after architecture approval.
+- [x] Authentication (login, register, forgot password)
+- [x] Organisation onboarding
+- [x] Dashboard shell (sidebar, header, mobile nav)
+- [x] House management
+- [x] Staff management (invite, activate/deactivate)
+- [x] Participant management
+- [x] Rostering (shifts, assign, accept/decline)
+- [x] Case notes (with file attachments)
+- [x] Incident reporting (with file attachments, admin notifications)
+- [x] Notifications (list, mark read, creation on shift assign + incident)
+- [x] Audit logging (shifts, assignments, case notes, incidents)
+- [x] Settings (profile, organisation)
+- [x] Seed data (supabase/seed.sql)
 
 ---
 
 ## Pending Work
 
-- [ ] Initialise Next.js project with TypeScript and TailwindCSS
-- [ ] Configure Supabase project and environment variables
-- [ ] Create initial database migration (full Phase 1 schema)
-- [ ] Implement RLS policies and helper functions
-- [ ] Build authentication module (login, register, forgot password)
-- [ ] Build organisation onboarding flow
-- [ ] Build dashboard shell (sidebar, header, mobile nav)
-- [ ] Build house management module
-- [ ] Build staff management module
-- [ ] Build participant management module
-- [ ] Build rostering module (shifts, calendar view)
-- [ ] Build shift assignment module (assign, accept, decline)
-- [ ] Build case notes module
-- [ ] Build incident reporting module
-- [ ] Build notifications module
+- [ ] Phase 2: Staff availability calendar, shift broadcast, AI features
+- [ ] Phase 3: Operational intelligence (familiarity score, stability score, compliance)
+- [ ] Phase 4: NDIS funding intelligence
 - [ ] Create seed data for development

@@ -17,6 +17,7 @@ import {
 } from '@/components/ui'
 import { FileText, Plus, Flag, UserCircle } from 'lucide-react'
 import { formatDateTime } from '@/lib/utils'
+import { uploadCaseNoteAttachment } from '@/lib/upload-service'
 
 const categoryBadge: Record<string, 'default' | 'blue' | 'green' | 'yellow' | 'red' | 'purple'> = {
   general: 'default',
@@ -36,13 +37,26 @@ export function CaseNotesList() {
 
   const [showCreateModal, setShowCreateModal] = useState(false)
 
-  async function handleCreate(data: { participant_id: string; content: string; category: string }) {
+  async function handleCreate(data: { participant_id: string; content: string; category: string; files: File[] }) {
     if (!user) return
-    await createCaseNote.mutateAsync({
+    const note = await createCaseNote.mutateAsync({
       organisation_id: user.organisation_id,
       author_id: user.id,
-      ...data,
+      participant_id: data.participant_id,
+      content: data.content,
+      category: data.category,
     } as never)
+
+    // Upload attachments after note is created
+    const created = note as { id: string }
+    if (data.files.length > 0 && created?.id) {
+      await Promise.allSettled(
+        data.files.map((file) =>
+          uploadCaseNoteAttachment(user.organisation_id, created.id, user.id, file)
+        )
+      )
+    }
+
     setShowCreateModal(false)
   }
 

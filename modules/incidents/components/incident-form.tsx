@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { Button, Input, Select, Textarea } from '@/components/ui'
+import { Button, Input, Select, Textarea, FileUpload } from '@/components/ui'
 import { INCIDENT_SEVERITIES, type IncidentSeverity } from '@/lib/constants'
 import type { House, Participant } from '@/types'
 
@@ -15,6 +15,7 @@ interface IncidentFormProps {
     house_id: string | null
     participant_id: string | null
     occurred_at: string
+    files: File[]
   }) => void
   loading?: boolean
 }
@@ -33,6 +34,7 @@ export function IncidentForm({ houses, participants, onSubmit, loading }: Incide
   const [occurredAt, setOccurredAt] = useState(
     new Date().toISOString().slice(0, 16)
   )
+  const [files, setFiles] = useState<File[]>([])
 
   const houseOptions = houses.filter((h) => h.is_active).map((h) => ({ value: h.id, label: h.name }))
   const participantOptions = participants.filter((p) => p.is_active).map((p) => ({ value: p.id, label: p.full_name }))
@@ -46,6 +48,7 @@ export function IncidentForm({ houses, participants, onSubmit, loading }: Incide
       house_id: houseId || null,
       participant_id: participantId || null,
       occurred_at: new Date(occurredAt).toISOString(),
+      files,
     })
   }
 
@@ -108,6 +111,15 @@ export function IncidentForm({ houses, participants, onSubmit, loading }: Incide
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required
+      />
+
+      <FileUpload
+        label="Attachments (optional)"
+        files={files}
+        onChange={setFiles}
+        accept="image/*,.pdf,.doc,.docx,.txt"
+        maxFiles={5}
+        maxSizeMB={10}
       />
 
       <div className="flex justify-end gap-3 pt-2">

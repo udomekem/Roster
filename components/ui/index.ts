@@ -8,3 +8,5 @@ export { Avatar, type AvatarProps } from './avatar'
 export { Modal } from './modal'
 export { EmptyState } from './empty-state'
 export { Loading, PageLoading } from './loading'
+export { FileUpload } from './file-upload'
+

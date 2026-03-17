@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { Button, Select, Textarea } from '@/components/ui'
+import { Button, Select, Textarea, FileUpload } from '@/components/ui'
 import { CASE_NOTE_CATEGORIES, type CaseNoteCategory } from '@/lib/constants'
 import type { Participant } from '@/types'
 
@@ -11,6 +11,7 @@ interface CaseNoteFormProps {
     participant_id: string
     content: string
     category: CaseNoteCategory
+    files: File[]
   }) => void
   loading?: boolean
 }
@@ -24,6 +25,7 @@ export function CaseNoteForm({ participants, onSubmit, loading }: CaseNoteFormPr
   const [participantId, setParticipantId] = useState('')
   const [content, setContent] = useState('')
   const [category, setCategory] = useState<CaseNoteCategory>('general')
+  const [files, setFiles] = useState<File[]>([])
 
   const participantOptions = participants
     .filter((p) => p.is_active)
@@ -35,6 +37,7 @@ export function CaseNoteForm({ participants, onSubmit, loading }: CaseNoteFormPr
       participant_id: participantId,
       content: content.trim(),
       category,
+      files,
     })
   }
 
@@ -66,6 +69,15 @@ export function CaseNoteForm({ participants, onSubmit, loading }: CaseNoteFormPr
         value={content}
         onChange={(e) => setContent(e.target.value)}
         required
+      />
+
+      <FileUpload
+        label="Attachments (optional)"
+        files={files}
+        onChange={setFiles}
+        accept="image/*,.pdf,.doc,.docx,.txt"
+        maxFiles={5}
+        maxSizeMB={10}
       />
 
       <div className="flex justify-end gap-3 pt-2">

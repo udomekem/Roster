@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import type { InsertTables, UpdateTables } from '@/types'
+import { logAudit } from '@/lib/audit-log'
 
 export async function getCaseNotes(filters?: { participantId?: string; authorId?: string }) {
   const supabase = createClient()
@@ -47,6 +48,7 @@ export async function createCaseNote(note: InsertTables<'case_notes'>) {
     .single()
 
   if (error) throw error
+  logAudit({ action_type: 'create', entity_type: 'case_note', entity_id: data.id })
   return data
 }
 
@@ -60,6 +62,7 @@ export async function updateCaseNote(id: string, updates: UpdateTables<'case_not
     .single()
 
   if (error) throw error
+  logAudit({ action_type: 'update', entity_type: 'case_note', entity_id: id, metadata: updates as Record<string, unknown> })
   return data
 }
 

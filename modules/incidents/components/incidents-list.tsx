@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useIncidents, useCreateIncident, useUpdateIncident } from '../hooks/use-incidents'
 import { useHouses } from '@/modules/houses/hooks/use-houses'
 import { useParticipants } from '@/modules/participants/hooks/use-participants'
+import { useStaff } from '@/modules/staff/hooks/use-staff'
 import { useUser } from '@/hooks/use-user'
 import { IncidentForm } from './incident-form'
 import {
@@ -18,6 +19,8 @@ import {
 } from '@/components/ui'
 import { AlertTriangle, Plus, Home, UserCircle } from 'lucide-react'
 import { formatDateTime } from '@/lib/utils'
+import { uploadIncidentAttachment } from '@/lib/upload-service'
+import { sendNotificationToMany } from '@/lib/notifications'
 
 const severityBadge: Record<string, 'default' | 'yellow' | 'red'> = {
   low: 'default',
@@ -38,6 +41,7 @@ export function IncidentsList() {
   const { data: incidents, isLoading } = useIncidents()
   const { data: houses } = useHouses()
   const { data: participants } = useParticipants()
+  const { data: staff } = useStaff()
   const createIncident = useCreateIncident()
   const updateIncident = useUpdateIncident()
 
@@ -52,13 +56,46 @@ export function IncidentsList() {
     house_id: string | null
     participant_id: string | null
     occurred_at: string
+    files: File[]
   }) {
     if (!user) return
-    await createIncident.mutateAsync({
+    const incident = await createIncident.mutateAsync({
       organisation_id: user.organisation_id,
       reported_by: user.id,
-      ...data,
+      title: data.title,
+      description: data.description,
+      severity: data.severity,
+      house_id: data.house_id,
+      participant_id: data.participant_id,
+      occurred_at: data.occurred_at,
     } as never)
+
+    const created = incident as { id: string }
+
+    // Upload attachments after incident is created
+    if (data.files.length > 0 && created?.id) {
+      await Promise.allSettled(
+        data.files.map((file) =>
+          uploadIncidentAttachment(user.organisation_id, created.id, user.id, file)
+        )
+      )
+    }
+
+    // Notify admins and team leaders about the new incident
+    const adminLeaderIds = (staff ?? [])
+      .filter((s) => (s.role === 'super_admin' || s.role === 'team_leader') && s.id !== user.id)
+      .map((s) => s.id)
+
+    if (adminLeaderIds.length > 0) {
+      sendNotificationToMany(adminLeaderIds, {
+        title: `New incident: ${data.title}`,
+        body: `Severity: ${data.severity}. Reported by ${user.full_name}.`,
+        type: 'incident_created',
+        reference_type: 'incident',
+        reference_id: created?.id,
+      })
+    }
+
     setShowCreateModal(false)
   }
 
