@@ -12,6 +12,10 @@ export type Incident = Tables<'incidents'>
 export type IncidentAttachment = Tables<'incident_attachments'>
 export type Notification = Tables<'notifications'>
 export type AuditLog = Tables<'audit_logs'>
+export type StaffAvailability = Tables<'staff_availability'>
+export type ShiftBroadcast = Tables<'shift_broadcasts'>
+export type ShiftBroadcastResponse = Tables<'shift_broadcast_responses'>
+export type ShiftSummary = Tables<'shift_summaries'>
 
 import type { Tables } from './database'
 
@@ -34,4 +38,12 @@ export type IncidentWithDetails = Tables<'incidents'> & {
   reporter: Tables<'staff_profiles'>
   reviewer: Tables<'staff_profiles'> | null
   incident_attachments: Tables<'incident_attachments'>[]
+}
+
+export type ShiftBroadcastWithDetails = Tables<'shift_broadcasts'> & {
+  shift: Tables<'shifts'> & { house: Tables<'houses'> }
+  creator: Tables<'staff_profiles'>
+  shift_broadcast_responses: (Tables<'shift_broadcast_responses'> & {
+    staff: Tables<'staff_profiles'>
+  })[]
 }

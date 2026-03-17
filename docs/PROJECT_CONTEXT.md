@@ -6,7 +6,7 @@ Last updated: 2026-03-14
 
 ## Current Status
 
-Phase: Phase 1 MVP complete. Notifications, audit logging, and file uploads implemented.
+Phase: Phase 2 complete. Staff availability, shift broadcasts, and AI features implemented.
 
 ---
 
@@ -492,11 +492,11 @@ RLS on `storage.objects` checks `(storage.foldername(name))[1]::uuid = get_user_
 
 ## Phased Development Roadmap
 
-### Phase 1 — Core Operations Platform (MVP) ← CURRENT TARGET
+### Phase 1 — Core Operations Platform (MVP) ← COMPLETE
 
 Modules: authentication, organisation onboarding, house management, staff management, roster scheduling, shift assignments, case notes, incident reporting, notifications
 
-### Phase 2 — Workforce Automation
+### Phase 2 — Workforce Automation ← COMPLETE
 
 Features: staff availability calendar, shift broadcast, replacement worker suggestions, voice-to-case-note, shift summary generation (first AI capabilities)
 
@@ -525,12 +525,15 @@ Features: participant funding profiles, roster-to-funding mapping, funding utili
 - [x] Audit logging (shifts, assignments, case notes, incidents)
 - [x] Settings (profile, organisation)
 - [x] Seed data (supabase/seed.sql)
+- [x] Staff availability calendar (personal + team view)
+- [x] Shift broadcast system (create, respond, accept/reject)
+- [x] AI: Voice-to-case-note (transcript → structured note)
+- [x] AI: Replacement worker suggestions (familiarity scoring)
+- [x] AI: Shift summary generation
 
 ---
 
 ## Pending Work
 
-- [ ] Phase 2: Staff availability calendar, shift broadcast, AI features
 - [ ] Phase 3: Operational intelligence (familiarity score, stability score, compliance)
 - [ ] Phase 4: NDIS funding intelligence
-- [ ] Create seed data for development

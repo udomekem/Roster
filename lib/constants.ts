@@ -67,12 +67,32 @@ export const INCIDENT_STATUSES = {
 export type IncidentStatus =
   (typeof INCIDENT_STATUSES)[keyof typeof INCIDENT_STATUSES]
 
+export const BROADCAST_STATUSES = {
+  OPEN: 'open',
+  FILLED: 'filled',
+  CANCELLED: 'cancelled',
+} as const
+
+export type BroadcastStatus =
+  (typeof BROADCAST_STATUSES)[keyof typeof BROADCAST_STATUSES]
+
+export const BROADCAST_RESPONSE_STATUSES = {
+  INTERESTED: 'interested',
+  ACCEPTED: 'accepted',
+  REJECTED: 'rejected',
+} as const
+
+export type BroadcastResponseStatus =
+  (typeof BROADCAST_RESPONSE_STATUSES)[keyof typeof BROADCAST_RESPONSE_STATUSES]
+
 export const NOTIFICATION_TYPES = {
   SHIFT_ASSIGNED: 'shift_assigned',
   SHIFT_UPDATED: 'shift_updated',
   SHIFT_REMINDER: 'shift_reminder',
   CASE_NOTE_FLAGGED: 'case_note_flagged',
   INCIDENT_CREATED: 'incident_created',
+  SHIFT_BROADCAST: 'shift_broadcast',
+  BROADCAST_RESPONSE: 'broadcast_response',
   GENERAL: 'general',
 } as const
 

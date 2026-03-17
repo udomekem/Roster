@@ -418,6 +418,124 @@ export interface Database {
         }
         Update: never
       }
+      staff_availability: {
+        Row: {
+          id: string
+          organisation_id: string
+          staff_id: string
+          date: string
+          is_available: boolean
+          start_time: string | null
+          end_time: string | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          organisation_id: string
+          staff_id: string
+          date: string
+          is_available?: boolean
+          start_time?: string | null
+          end_time?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          is_available?: boolean
+          start_time?: string | null
+          end_time?: string | null
+          notes?: string | null
+          updated_at?: string
+        }
+      }
+      shift_broadcasts: {
+        Row: {
+          id: string
+          organisation_id: string
+          shift_id: string
+          created_by: string
+          message: string | null
+          status: 'open' | 'filled' | 'cancelled'
+          expires_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          organisation_id: string
+          shift_id: string
+          created_by: string
+          message?: string | null
+          status?: 'open' | 'filled' | 'cancelled'
+          expires_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          message?: string | null
+          status?: 'open' | 'filled' | 'cancelled'
+          expires_at?: string | null
+          updated_at?: string
+        }
+      }
+      shift_broadcast_responses: {
+        Row: {
+          id: string
+          organisation_id: string
+          broadcast_id: string
+          staff_id: string
+          status: 'interested' | 'accepted' | 'rejected'
+          responded_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          organisation_id: string
+          broadcast_id: string
+          staff_id: string
+          status?: 'interested' | 'accepted' | 'rejected'
+          responded_at?: string
+          created_at?: string
+        }
+        Update: {
+          status?: 'interested' | 'accepted' | 'rejected'
+        }
+      }
+      shift_summaries: {
+        Row: {
+          id: string
+          organisation_id: string
+          shift_id: string
+          summary: string
+          generated_at: string
+          generated_by: string | null
+          is_approved: boolean
+          approved_by: string | null
+          approved_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          organisation_id: string
+          shift_id: string
+          summary: string
+          generated_at?: string
+          generated_by?: string | null
+          is_approved?: boolean
+          approved_by?: string | null
+          approved_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          summary?: string
+          is_approved?: boolean
+          approved_by?: string | null
+          approved_at?: string | null
+        }
+      }
     }
     Views: {
       [_ in never]: never
