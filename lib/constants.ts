@@ -67,6 +67,31 @@ export const INCIDENT_STATUSES = {
 export type IncidentStatus =
   (typeof INCIDENT_STATUSES)[keyof typeof INCIDENT_STATUSES]
 
+export const EMPLOYMENT_TYPES = {
+  FULL_TIME: 'full_time',
+  CASUAL: 'casual',
+  AGENCY: 'agency',
+} as const
+
+export type EmploymentType =
+  (typeof EMPLOYMENT_TYPES)[keyof typeof EMPLOYMENT_TYPES]
+
+export const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
+  full_time: 'Full-time',
+  casual: 'Casual',
+  agency: 'Agency',
+}
+
+export const SUBMISSION_STATUSES = {
+  PENDING: 'pending',
+  SUBMITTED: 'submitted',
+  APPROVED: 'approved',
+  REJECTED: 'rejected',
+} as const
+
+export type SubmissionStatus =
+  (typeof SUBMISSION_STATUSES)[keyof typeof SUBMISSION_STATUSES]
+
 export const BROADCAST_STATUSES = {
   OPEN: 'open',
   FILLED: 'filled',

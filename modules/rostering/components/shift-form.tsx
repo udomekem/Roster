@@ -14,11 +14,13 @@ interface ShiftFormProps {
     notes: string | null
   }) => void
   loading?: boolean
+  defaultHouseId?: string
+  defaultDate?: string
 }
 
-export function ShiftForm({ houses, onSubmit, loading }: ShiftFormProps) {
-  const [houseId, setHouseId] = useState('')
-  const [date, setDate] = useState('')
+export function ShiftForm({ houses, onSubmit, loading, defaultHouseId, defaultDate }: ShiftFormProps) {
+  const [houseId, setHouseId] = useState(defaultHouseId ?? '')
+  const [date, setDate] = useState(defaultDate ?? '')
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
   const [notes, setNotes] = useState('')

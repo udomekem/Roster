@@ -1,9 +1,7 @@
-export const dynamic = 'force-dynamic'
-
 'use client'
 
 import { useUser } from '@/hooks/use-user'
-import { RosterView } from '@/modules/rostering/components/roster-view'
+import { WeeklyRoster } from '@/modules/rostering/components/weekly-roster'
 import { MyShifts } from '@/modules/rostering/components/my-shifts'
 import { PageLoading } from '@/components/ui'
 
@@ -16,5 +14,5 @@ export default function RosterPage() {
     return <MyShifts />
   }
 
-  return <RosterView />
+  return <WeeklyRoster />
 }

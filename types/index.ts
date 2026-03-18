@@ -16,6 +16,7 @@ export type StaffAvailability = Tables<'staff_availability'>
 export type ShiftBroadcast = Tables<'shift_broadcasts'>
 export type ShiftBroadcastResponse = Tables<'shift_broadcast_responses'>
 export type ShiftSummary = Tables<'shift_summaries'>
+export type ShiftSubmission = Tables<'shift_submissions'>
 
 import type { Tables } from './database'
 

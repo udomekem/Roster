@@ -54,6 +54,7 @@ export interface Database {
           full_name: string
           phone: string | null
           role: 'super_admin' | 'team_leader' | 'staff'
+          employment_type: 'full_time' | 'casual' | 'agency'
           avatar_url: string | null
           is_active: boolean
           created_at: string
@@ -66,6 +67,7 @@ export interface Database {
           full_name: string
           phone?: string | null
           role: 'super_admin' | 'team_leader' | 'staff'
+          employment_type?: 'full_time' | 'casual' | 'agency'
           avatar_url?: string | null
           is_active?: boolean
           created_at?: string
@@ -77,8 +79,47 @@ export interface Database {
           full_name?: string
           phone?: string | null
           role?: 'super_admin' | 'team_leader' | 'staff'
+          employment_type?: 'full_time' | 'casual' | 'agency'
           avatar_url?: string | null
           is_active?: boolean
+          updated_at?: string
+        }
+      }
+      shift_submissions: {
+        Row: {
+          id: string
+          organisation_id: string
+          staff_id: string
+          period_start: string
+          period_end: string
+          status: 'pending' | 'submitted' | 'approved' | 'rejected'
+          submitted_at: string | null
+          reviewed_by: string | null
+          reviewed_at: string | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          organisation_id: string
+          staff_id: string
+          period_start: string
+          period_end: string
+          status?: 'pending' | 'submitted' | 'approved' | 'rejected'
+          submitted_at?: string | null
+          reviewed_by?: string | null
+          reviewed_at?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          status?: 'pending' | 'submitted' | 'approved' | 'rejected'
+          submitted_at?: string | null
+          reviewed_by?: string | null
+          reviewed_at?: string | null
+          notes?: string | null
           updated_at?: string
         }
       }
